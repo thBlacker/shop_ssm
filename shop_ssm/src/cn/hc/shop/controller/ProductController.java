@@ -80,13 +80,31 @@ public class ProductController {
 	}
 	
 	@RequestMapping("/search")
-	public String search(@RequestParam("lprice") Double lprice, @RequestParam("hprice") Double hprice,@RequestParam("prname") String prname,@RequestParam(value="page", required=false,defaultValue="1") int page,Map<String, Object> map,HttpSession session){
+	public String search(@RequestParam(value="sid", required=false,defaultValue="1") int sid, @RequestParam(value="lprice", required=false ) Double lprice, @RequestParam(value="hprice",required=false) Double hprice,@RequestParam(value="prname", required=false) String prname,@RequestParam(value="page", required=false,defaultValue="1") int page,Map<String, Object> map,HttpSession session){
+		if(lprice != null || hprice!=null || prname!=null){
+			session.setAttribute("lprice", lprice);
+			session.setAttribute("hprice", hprice);
+			session.setAttribute("prname", prname);
+		}
+		
+		if(lprice == null && hprice==null && prname==null){
+			Object oLprice = session.getAttribute("lprice");
+			if(oLprice != null){
+				lprice = (Double) oLprice;
+			}
+			Object oHprice = session.getAttribute("hprice");
+			if(oHprice != null){
+				hprice = (Double) oHprice;
+			}
+			Object oPrname = session.getAttribute("prname");
+			if(oPrname != null){
+				prname = (String) oPrname;
+			}
+		}
+		
 		PageBean<Product> pageBean = productService.getPageBean(lprice,hprice,prname,page);
 		map.put("pageBean", pageBean);
-		map.put("lprice", lprice);
-		map.put("hprice", hprice);
-		map.put("prname", prname);
-		map.put("csid", pageBean.getTotalPage());
+		map.put("sid", sid);
 		return "productList";
 	}
 	

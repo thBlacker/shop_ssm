@@ -101,6 +101,26 @@
 				<a class="lastPage" href="${ pageContext.request.contextPath }/product_findByCsid?csid=${csid}&page=${pageBean.totalPage}">&nbsp;</a>
 			</c:if>
 		</c:if>	
+		<c:if test="${sid != null }">
+			<c:if test="${pageBean.page != 1 }">
+				<a href="${ pageContext.request.contextPath }/search?sid=${sid}&page=1" class="firstPage">&nbsp;</a>
+				<a href="${ pageContext.request.contextPath }/search?sid=${sid}&page=${pageBean.page-1 }" class="previousPage">&nbsp;</a>
+			</c:if>
+			
+			<c:forEach var="i" begin="1" end="${pageBean.totalPage }">
+				<c:if test="${pageBean.page != i }">
+					<a href="${ pageContext.request.contextPath }/search?sid=${sid}&page=${i}">${i}</a>
+				</c:if>
+				<c:if test="${pageBean.page == i }">
+					<span class="currentPage">${i}</span>
+				</c:if>
+			</c:forEach>
+			
+			<c:if test="pageBean.page != pageBean.totalPage">	
+				<a class="nextPage" href="${ pageContext.request.contextPath }/search?sid=${sid}&page=${pageBean.page+1}">&nbsp;</a>
+				<a class="lastPage" href="${ pageContext.request.contextPath }/search?sid=${sid}&page=${pageBean.totalPage}">&nbsp;</a>
+			</c:if>
+		</c:if>	
 	</div>
 			</form>
 		</div>
